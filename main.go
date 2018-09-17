@@ -7,13 +7,16 @@ import (
 	"path"
 //	"bytes"
 
-	"fmt"
 	"errors"
 	"io/ioutil"
 )
 
+// A tool to transform text into emojis or emojis into text
+// Usage:
+//   ./emojicode [encode/decode] [input file] [output file]
 func main() {
-	if len(os.Args) == 1 {
+
+	if len(os.Args) < 2 {
 		panic(errors.New("Must include file"))
 	}
 
@@ -28,10 +31,11 @@ func main() {
 	}
 
 	encodedFile := readAndEncodeFile(file)
-	fmt.Printf("encoded file: %v", encodedFile)
 
-  emojiString := stringToEmoji(encodedFile)
-	fmt.Printf("emojied file: %v", emojiString)
+	emojiString := stringToEmoji(encodedFile)
+
+	panic(errors.New(emojiString))
+//	fmt.Printf("emojied file: %v", emojiString)
 }
 
 // reads in a file, base 64 encodes it, and returns a string
@@ -55,7 +59,6 @@ func readAndEncodeFile(fileName string) string {
 /*
   str := "01234567890abcdefghijklmnopqrstuvwxyz??\n01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   emo := stringToEmoji(str);
-  fmt.Println(emo);
 */
 
 func stringToEmoji(str string) string {
@@ -77,9 +80,6 @@ func translateRune(r rune) rune {
     return capA + (r - 'A');
   }
   var num = '🤐'
-  fmt.Println(int(lowerA))
-  fmt.Println(int(capA))
-  fmt.Println(int(num))
   if (r >= '0' && r <= '9') {
     return num + (r - '0');
   }
@@ -88,3 +88,9 @@ func translateRune(r rune) rune {
   }
   return r
 }
+/*
+// reads in a file, 
+readAndDecodeFile(fileName string) string {
+
+}
+*/
