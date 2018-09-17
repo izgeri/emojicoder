@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-
 	if len(os.Args) == 1 {
 		panic(errors.New("Must include file"))
 	}
@@ -29,8 +28,10 @@ func main() {
 	}
 
 	encodedFile := readAndEncodeFile(file)
-
 	fmt.Printf("encoded file: %v", encodedFile)
+
+  emojiString := stringToEmoji(encodedFile)
+	fmt.Printf("emojied file: %v", emojiString)
 }
 
 // reads in a file, base 64 encodes it, and returns a string
@@ -49,4 +50,41 @@ func readAndEncodeFile(fileName string) string {
 	encodedFile = mime.BEncoding.Encode("UTF-8", fileString)
 
 	return encodedFile
+}
+
+/*
+  str := "01234567890abcdefghijklmnopqrstuvwxyz??\n01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  emo := stringToEmoji(str);
+  fmt.Println(emo);
+*/
+
+func stringToEmoji(str string) string {
+  runes := []rune(str)
+  outrunes := make([]rune, len(runes))
+  for i := 0; i < len(runes); i = i+1 {
+    outrunes[i] = translateRune(runes[i])
+  }
+  return string(outrunes)
+}
+
+func translateRune(r rune) rune {
+  var lowerA = '😄'
+  if (r >= 'a' && r <= 'z') {
+    return lowerA + (r - 'a');
+  }
+  var capA = '😤'
+  if (r >= 'A' && r <= 'Z') {
+    return capA + (r - 'A');
+  }
+  var num = '🤐'
+  fmt.Println(int(lowerA))
+  fmt.Println(int(capA))
+  fmt.Println(int(num))
+  if (r >= '0' && r <= '9') {
+    return num + (r - '0');
+  }
+  if (r == '?') {
+    return '💥'
+  }
+  return r
 }
